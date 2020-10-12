@@ -70,7 +70,7 @@ TEMPLATES = [
         },
     },
 ]
-
+AUTH_USER_MODEL = 'retailApp.Account'
 WSGI_APPLICATION = 'retail.wsgi.application'
 
 

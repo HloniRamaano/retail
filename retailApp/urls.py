@@ -18,4 +18,10 @@ urlpatterns = [
     #Payment API's
     path('payment-list/', views.paymentList, name="payment-list"),
     path('payment-create/', views.paymentCreate, name="payment-create"),
+    
+    
+    #Account Api's
+    path('account-create/',views.accountCreate, name="account-create"),
+    path('account-list/', views.accountList, name="account-list"),
+    path('account-update/<str:pk>/', views.accountUpdate, name="account-update")
 ]

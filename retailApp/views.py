@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework import status
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from . models import Product, ShoppingCart, Payment
-from . serializers import ProductSerializer, ShoppingCartSerializer, PaymentSerializer
+from . models import Product, ShoppingCart, Payment,Account
+from . serializers import ProductSerializer, ShoppingCartSerializer, PaymentSerializer,AccountSerializer,accountsSerializer
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -20,8 +21,11 @@ def apiOverview(request):
         'Shopping Cart Add': 'shopping-cart-add/',
         'Payment List': 'shopping-cart-add/',
         'Payment Create': 'payment-create/',
+        'Account Create':'account-create/',
+        'Account List' :'account-list/',
+        'Account Update' :'/account-update/<str:pk>/',
     }
-
+    
     return Response(api_urls)
 
 #Product API's
@@ -98,3 +102,37 @@ def paymentCreate(request):
         serializer.save()
 
     return Response(serializer.data)
+
+#Account
+@api_view(['POST'])
+def accountCreate(request):
+    if request.method == 'POST':
+        serializer = AccountSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            account = serializer.save()
+            data['response'] = "Successful Registered a new user"
+            data['firstname'] = account.firstname
+            data['lastname'] = account.lastname
+            data['username'] = account.username
+            data['email'] = account.email
+        else:
+            data = serializer.errors
+        return Response(data)
+    
+@api_view(['GET'])
+def accountList(request):
+    context ="Registered Users!"
+    accountlist = Account.objects.values_list('id','firstname', 'lastname','email', 'username', 'date_joined','last_login', 'is_admin', 'is_staff', named=True)
+    serializer = accountsSerializer(accountlist, many = True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def accountUpdate(request, pk):
+    accountupdate = Account.objects.get(id=pk)
+    serializer = accountsSerializer(instance=accountupdate, data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+    
