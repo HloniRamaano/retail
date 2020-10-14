@@ -23,5 +23,10 @@ urlpatterns = [
     #Account Api's
     path('account-create/',views.accountCreate, name="account-create"),
     path('account-list/', views.accountList, name="account-list"),
-    path('account-update/<str:pk>/', views.accountUpdate, name="account-update")
+    path('account-update/<str:pk>/', views.accountUpdate, name="account-update"),
+    
+        
+    #Front end urls
+    path('home/',views.home_view, name='home'),
+    path('register/',views.registration_view, name='register'),
 ]

@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework import status
 
+from django.shortcuts import render,redirect
+from .forms import RegistrationForm
+from django.contrib.auth import authenticate
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -24,6 +28,8 @@ def apiOverview(request):
         'Account Create':'account-create/',
         'Account List' :'account-list/',
         'Account Update' :'/account-update/<str:pk>/',
+        'Home' :'home-view/',
+        'Register' :'register-view/'
     }
     
     return Response(api_urls)
@@ -136,3 +142,32 @@ def accountUpdate(request, pk):
         serializer.save()
     return Response(serializer.data)
     
+    
+    
+#FRONT END VIEWS
+
+def home_view(request):
+    context = { }
+    
+    accounts = Account.objects.all()
+    context['accounts'] = accounts
+    
+    return render(request, 'home.html',{})
+
+def registration_view(request):
+    context = {}
+    if request.POST:
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            account = authenticate(email=email, password=raw_password)
+           # login(request, account)
+            return redirect('home')
+        else:
+            context['registration_form'] = form
+    else:
+        form = RegistrationForm()
+        context['registration_form'] = form
+    return render(request, 'register.html', context)
