@@ -29,4 +29,7 @@ urlpatterns = [
     #Front end urls
     path('home/',views.home_view, name='home'),
     path('register/',views.registration_view, name='register'),
+
+    #Image Upload
+     
 ]
