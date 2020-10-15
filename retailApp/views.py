@@ -149,8 +149,8 @@ def accountUpdate(request, pk):
 def home_view(request):
     context = { }
     
-    accounts = Account.objects.all()
-    context['accounts'] = accounts
+    prod = Product.objects.all()
+    context['prod'] = prod
     
     return render(request, 'home.html',{})
 
