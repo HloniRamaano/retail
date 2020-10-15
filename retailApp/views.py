@@ -149,10 +149,11 @@ def accountUpdate(request, pk):
 def home_view(request):
     context = { }
     
-    accounts = Account.objects.all()
-    context['accounts'] = accounts
+    products = Product.objects.all()
+    context['products'] = products
+
     
-    return render(request, 'home.html',{})
+    return render(request, 'home.html',context)
 
 def registration_view(request):
     context = {}

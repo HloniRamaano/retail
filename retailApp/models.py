@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 class Product(models.Model):
     name = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to='product', null=True, blank=True)
+    image = models.ImageField(upload_to='product', null=True, blank=True, verbose_name='image')
     price = models.FloatField()
     description = models.TextField()
     category = models.CharField(max_length = 200)
